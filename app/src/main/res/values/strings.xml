@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AndroidHomework</string>
+    <string name="about">About</string>
+    <string name="contact_us">Contact us</string>
+    <string name="exit">Exit</string>
 </resources>
