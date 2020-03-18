@@ -1,14 +1,17 @@
 package com.example.androidhomework;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.content.Intent.EXTRA_TEXT;
 
-//https://stackoverflow.com/questions/13022677/save-state-of-activity-when-orientation-changes-android
+// https://stackoverflow.com/questions/13022677/save-state-of-activity-when-orientation-changes-android
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
 
     private static final String TAG = "MainActivity";
     final int productCount = 4;
@@ -104,5 +108,39 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item1:
+                ShowDialog(item.getTitle().toString());
+                break;
+            case R.id.item2:
+                GoToActivityThroughIntent(item.getTitle().toString());
+                break;
+            case R.id.item3:
+                this.finishActivity(0);
+                break;
+
+        }
+        return true;
+    }
+
+    public void GoToActivityThroughIntent(String item_name) {
+        Intent intent = new Intent(this, ExampleActivity.class);
+        intent.putExtra(EXTRA_TEXT, item_name);
+        startActivity(intent);
+    }
+
+    public void ShowDialog(String message) {
+        ExampleDialog exampleDialog = new ExampleDialog(message);
+        exampleDialog.show(getSupportFragmentManager(), "Example dialog.");
+    }
+
+    // dialog listener implementation (implements ExampleDialog.ExampleDialogListener)
+    @Override
+    public void applyTexts(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
