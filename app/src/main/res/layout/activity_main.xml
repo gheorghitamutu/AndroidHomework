@@ -23,4 +23,35 @@
         android:layout_centerHorizontal="true"
         />
 
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="193dp"
+        android:layout_height="129dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="206dp"
+        android:autofillHints="Preferences"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="390dp"
+        android:onClick="save"
+        android:text="@string/save" />
+
+    <Button
+        android:id="@+id/button_load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="450dp"
+        android:onClick="load"
+        android:text="@string/load" />
+
 </RelativeLayout>

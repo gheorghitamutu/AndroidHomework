@@ -1,7 +1,9 @@
 package com.example.androidhomework;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -23,13 +31,19 @@ import static android.content.Intent.EXTRA_TEXT;
 
 // https://stackoverflow.com/questions/13022677/save-state-of-activity-when-orientation-changes-android
 
-public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
+public class MainActivity extends AppCompatActivity
+        implements ExampleDialog.ExampleDialogListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "MainActivity";
     final int productCount = 4;
     final private String productTextViewValueContent = "productTextViewValueContent";
     ListView listView;
     TextView productTextView;
+
+    private static final String FILE_NAME = "shared_preferences_lab_05";
+    TextView potentiallyVisibleTextView;
+    EditText contentToSaveEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                 productTextView.setText(clickedItem);
             }
         });
+
+        setupSharedPreferences();
+        contentToSaveEditText = findViewById(R.id.edit_text);
     }
 
     @Override
@@ -95,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
+        PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -122,7 +142,9 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             case R.id.item3:
                 this.finishActivity(0);
                 break;
-
+            case R.id.item4:
+                openSettingsActivity();
+                break;
         }
         return true;
     }
@@ -142,5 +164,85 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     @Override
     public void applyTexts(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void setupSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void setTextVisible(boolean display_text) {
+        if (display_text) {
+            potentiallyVisibleTextView.setVisibility(View.VISIBLE);
+        } else {
+            potentiallyVisibleTextView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("display_text")) {
+            setTextVisible(sharedPreferences.getBoolean("display_text", true));
+        }
+    }
+
+    public void openSettingsActivity() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void save(View v) {
+        String text = contentToSaveEditText.getText().toString();
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            contentToSaveEditText.getText().clear();
+
+            Toast.makeText(
+                    this,
+                    String.format("Content saved to %s/%s", getFilesDir(), FILE_NAME),
+                    Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void load(View v) {
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+            contentToSaveEditText.setText(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
