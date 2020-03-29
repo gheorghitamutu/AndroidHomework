@@ -18,6 +18,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/item5"
+        android:title="@string/sensors"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/item3"
         android:title="@string/exit"
         app:showAsAction="never" />

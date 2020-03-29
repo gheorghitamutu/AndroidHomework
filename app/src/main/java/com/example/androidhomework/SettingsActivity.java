@@ -3,7 +3,6 @@ package com.example.androidhomework;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -44,19 +43,10 @@ public class SettingsActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.save_button);
         saveSwitch = findViewById(R.id.switch1);
 
-        applyTextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                messageTextView.setText(contentToSaveEditText.getText().toString());
-            }
-        });
+        applyTextButton.setOnClickListener(
+                v -> messageTextView.setText(contentToSaveEditText.getText().toString()));
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveData();
-            }
-        });
+        saveButton.setOnClickListener(v -> saveData());
 
         loadData();
         updateViews();

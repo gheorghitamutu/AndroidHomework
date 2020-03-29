@@ -2,7 +2,6 @@ package com.example.androidhomework;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,11 +27,7 @@ public class ExampleActivity extends AppCompatActivity {
         messageEditText = findViewById(R.id.edit_text_message);
 
         Button shareMessageButton = findViewById(R.id.button_share_message);
-        shareMessageButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                shareMessage();
-            }
-        });
+        shareMessageButton.setOnClickListener(v -> shareMessage());
     }
 
     private void shareMessage() {

@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -72,12 +71,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         // show the selected item
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItem = (String) listView.getItemAtPosition(position);
-                productTextView.setText(clickedItem);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String clickedItem = (String) listView.getItemAtPosition(position);
+            productTextView.setText(clickedItem);
         });
 
         setupSharedPreferences();
@@ -144,6 +140,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.item4:
                 openSettingsActivity();
+                break;
+            case R.id.item5:
+                openActivitySensors();
                 break;
         }
         return true;
@@ -244,5 +243,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    public void openActivitySensors() {
+        Intent intent = new Intent(MainActivity.this, SensorActivity.class);
+        startActivity(intent);
     }
 }

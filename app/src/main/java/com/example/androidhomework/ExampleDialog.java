@@ -3,7 +3,6 @@ package com.example.androidhomework;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,18 +32,11 @@ public class ExampleDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Send")
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // pass - it is automatically closed & destroyed, no further action needed
-                    }
-                }).setPositiveButton("ok", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String message = messageEditText.getText().toString();
-                listener.applyTexts(message);
-            }
+                .setNegativeButton("cancel", (dialog, which) -> {
+                    // pass - it is automatically closed & destroyed, no further action needed
+                }).setPositiveButton("ok", (dialog, which) -> {
+            String message = messageEditText.getText().toString();
+            listener.applyTexts(message);
         });
 
         TextView textMessage = view.findViewById(R.id.dialog_message);
