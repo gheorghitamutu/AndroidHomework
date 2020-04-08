@@ -145,17 +145,6 @@ public class CameraActivity extends AppCompatActivity {
                         },
                         mBackgroundHandler);
 
-                final CaptureCallback captureListener = new CaptureCallback() {
-                    @Override
-                    public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
-                        super.onCaptureCompleted(session, request, result);
-
-                        Toast.makeText(CameraActivity.this, "Saved:" + pictureFile, Toast.LENGTH_SHORT).show();
-
-                        createCameraPreview();
-                    }
-                };
-
                 cameraDevice.createCaptureSession(
                         outputSurfaces,
                         new CameraCaptureSession.StateCallback() {
