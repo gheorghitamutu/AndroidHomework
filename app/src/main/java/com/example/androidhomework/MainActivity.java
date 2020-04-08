@@ -144,6 +144,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.item5:
                 openActivitySensors();
                 break;
+            case R.id.item6:
+                openActivityCamera();
+                break;
         }
         return true;
     }
@@ -247,6 +250,11 @@ public class MainActivity extends AppCompatActivity
 
     public void openActivitySensors() {
         Intent intent = new Intent(MainActivity.this, SensorActivity.class);
+        startActivity(intent);
+    }
+
+    public void openActivityCamera() {
+        Intent intent = new Intent(MainActivity.this, CameraActivity.class);
         startActivity(intent);
     }
 }

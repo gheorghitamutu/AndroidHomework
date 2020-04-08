@@ -20,4 +20,8 @@
     <string name="settings">Settings</string>
     <string name="title_activity_sensor">SensorActivity</string>
     <string name="sensors">Sensors</string>
+    <string name="camera">Camera</string>
+    <string name="camera_example">Camera example</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="capture">Capture</string>
 </resources>
